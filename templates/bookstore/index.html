@@ -1,0 +1,62 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="container">
+
+    <div class="input-group">
+        <form method="POST" action="{% url 'search' %}">
+            {% csrf_token %}
+            <input type="text" class="form-control rounded" placeholder="Tên sách"  id="ten" name="ten"/>
+            <button type="submit" class="btn btn-outline-primary">Tìm sách</button>
+        </form>
+    </div>
+
+    <div class="mb-3" style="
+      font-size: 15px;
+      text-align: center;
+
+      margin-top: 30px;
+    ">
+        <h1 style="font-size: 20px">DANH SÁCH</h1>
+    </div>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Tên Sách</th>
+                <th scope="col">Giá</th>
+                <th scope="col">Tác Giả</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in page_obj%}
+            <tr>
+                <th scope="row">{{book.id}}</th>
+                <td>{{book.tenSach}}</td>
+                <td>{{book.gia}}</td>
+                <td>{{book.tacGia}}</td>
+            </tr>
+            {% endfor %}
+
+</div>
+</tbody>
+</table>
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo; Trước</a>
+        <a href="?page={{ page_obj.previous_page_number }}">Sau</a>
+        {% endif %}
+
+        <span class="current">
+            Trang {{ page_obj.number }} của {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">>></a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">
+            << &raquo;</a>
+                {% endif %}
+    </span>
+</div>
+{% endblock %}
